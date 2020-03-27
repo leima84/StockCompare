@@ -4,10 +4,6 @@ import Plot from 'react-plotly.js';
 class Stock extends React.Component {
   constructor(props) {
     super(props);
-    //this.state = {
-    //  stockChartXValues: [],
-    //  stockChartYValues: []
-    //}
     this.state = {
       stocks: [],
       stockChartXValues: [],
@@ -71,6 +67,30 @@ class Stock extends React.Component {
       )
   }
 
+  removeStocks(){
+    this.state.stocks.forEach(stock =>
+      {
+        if(this.props.stocks.includes(stock)===false){
+          var newStocks = this.state.stocks;
+          var newStockChartXValues = this.state.stockChartXValues;
+          var newStockChartYValues = this.state.stockChartYValues;
+          var newStockPlotData = this.state.stockPlotData;
+          var index = newStocks.indexOf(stock);
+          //assert(index!==-1);
+          newStocks.splice(index, 1);
+          newStockChartXValues.splice(index, 1);
+          newStockChartYValues.splice(index, 1);
+          newStockPlotData.splice(index, 1);
+          this.setState({stocks: newStocks});
+          this.setState({stockChartXValues: newStockChartXValues});
+          this.setState({stockChartYValues: newStockChartYValues});
+          this.setState({stockPlotData: newStockPlotData});
+          console.log(this.state.stocks);
+        }
+      }
+    )
+  }
+
   fetchStocks(){
     this.props.stocks.forEach(stock => 
       {
@@ -88,6 +108,7 @@ class Stock extends React.Component {
   }
 
   componentDidUpdate() {
+    this.removeStocks();
     this.fetchStocks();
   }
 
